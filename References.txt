@@ -1,0 +1,4 @@
+https://www.darrengrixti.com/2021/04/04/travelling-salesman-problem-part-1/
+https://www.daniweb.com/programming/software-development/threads/349926/c-string-permutation#post1485682
+https://www.baeldung.com/cs/tsp-exact-solutions-vs-heuristic-vs-approximation-algorithms
+https://codereview.stackexchange.com/questions/226804/linq-for-generating-all-possible-permutations
