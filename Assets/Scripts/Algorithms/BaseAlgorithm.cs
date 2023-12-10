@@ -42,14 +42,14 @@ public class BaseAlgorithm : MonoBehaviour
         
     }
 
-    protected void StartOfSort()
+    protected void StartOfAlgorithm()
     {
         algorithmPort.unordered.CopyTo(pointsToFindPath);
         Profiler.BeginSample(GetType().Name, this);
         temp = Time.realtimeSinceStartup;
     }
     
-    protected void EndOfSort()
+    protected void EndOfAlgorithm()
     {
         temp = Time.realtimeSinceStartup - temp;
         Profiler.EndSample();
