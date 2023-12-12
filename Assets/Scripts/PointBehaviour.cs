@@ -6,13 +6,7 @@ using Random = UnityEngine.Random;
 
 public class PointBehaviour : MonoBehaviour
 {
-    [NonSerialized] public Vector2 position;
-    [NonSerialized] public SpriteRenderer sr;
-
-    private void Awake()
-    {
-        sr = GetComponent<SpriteRenderer>();
-    }
+    [NonSerialized] public Vector2 position = Vector2.zero;
 
     public void NewPosition()
     {

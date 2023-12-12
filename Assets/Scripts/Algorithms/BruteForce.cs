@@ -3,49 +3,61 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class BruteForce : BaseAlgorithm
-{
+{ 
+    //Optimize by making a startpoint and not including that in permutations
+    private float shortestPathDistance;
+    private PointBehaviour[] shortestPath;
     protected override void Algorithm()
     {
         StartOfAlgorithm();
+
+        shortestPathDistance = int.MaxValue;
         
-        //IList<IList<PointBehaviour>> perms = Permutations(pointsToFindPath);
-        //foreach (IList<PointBehaviour> perm in perms)
+        int i;
+        int N = pointsToFindPath.Length;
+        shortestPath = new PointBehaviour[N];
+        int[] p = new int[N + 1];
+        for (i = 0; i < p.Length; i++)
         {
-            
-            //Go through here
+            p[i] = i;
         }
+
+        int j;
+        i = 1;
+        while (i < N)
+        {
+            p[i]--;
+            j = i % 2 == 0 ? p[i] : 0;
+            (pointsToFindPath[j], pointsToFindPath[i]) = (pointsToFindPath[i], pointsToFindPath[j]);
+            CalculateDistance();
+            i = 1;
+            while (p[i] == 0)
+            {
+                p[i] = i;
+                i++;
+            }
+        }
+        
+        pointsToFindPath = shortestPath;
         
         EndOfAlgorithm();
     }
-    
-    private static void Test()
+
+    //Might move this to BaseAlgorithm if all use it. 
+    private void CalculateDistance()
     {
-        
-        
-    }
-
-    private static IList<IList<PointBehaviour>> Permutations(List<PointBehaviour> list)
-    {
-        List<IList<PointBehaviour>> perms = new List<IList<PointBehaviour>>();
-
-        int factorial = 1;
-        for (int i = 2; i <= list.Count; i++)
-            factorial *= i;
-
-        for (int v = 0; v < factorial; v++)
+        float distance = 0;
+        for (int i = 1; i < pointsToFindPath.Length; i++)
         {
-            List<PointBehaviour> s = new List<PointBehaviour>(list);                
-            int k = v;
-            for (int j = 2; j <= list.Count; j++)
-            {
-                int other = k % j;
-                (s[j - 1], s[other]) = (s[other], s[j - 1]);
-
-                k /= j;
-            }
-            perms.Add(s);
+            distance += Vector2.Distance(pointsToFindPath[i].position, pointsToFindPath[i - 1].position);
         }
 
-        return perms;
+        distance += Vector2.Distance(pointsToFindPath[0].position, pointsToFindPath[^1].position);
+
+        if (distance < shortestPathDistance)
+        {
+            shortestPathDistance = distance;
+            shortestPath = (PointBehaviour[])pointsToFindPath.Clone();
+        }
     }
 }

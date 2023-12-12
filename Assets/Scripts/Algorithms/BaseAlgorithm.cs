@@ -44,6 +44,7 @@ public class BaseAlgorithm : MonoBehaviour
 
     protected void StartOfAlgorithm()
     {
+        pointsToFindPath = new PointBehaviour[algorithmPort.unordered.Count];
         algorithmPort.unordered.CopyTo(pointsToFindPath);
         Profiler.BeginSample(GetType().Name, this);
         temp = Time.realtimeSinceStartup;
@@ -55,6 +56,7 @@ public class BaseAlgorithm : MonoBehaviour
         Profiler.EndSample();
         timeAccumulated += temp;
         timeList.Add(temp * 1000);
+        
         algorithmPort.shortestPath = pointsToFindPath;
         
         if(timeAccumulated > algorithmPort.MaxTimePerInterval) gameObject.SetActive(false);
