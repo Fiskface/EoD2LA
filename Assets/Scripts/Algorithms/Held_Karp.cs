@@ -29,7 +29,8 @@ public class Held_Karp : BaseAlgorithm
         
         memo = new float[n, 1 << n];
 
-        float result = HeldKarp(0, 1);
+        var result = HeldKarp(0, new HashSet<int>(), new List<int>());
+        result.Item2.CopyTo(resultTour);
 
         for (int i = 0; i < resultTour.Length; i++)
         {
@@ -39,29 +40,59 @@ public class Held_Karp : BaseAlgorithm
         EndOfAlgorithm();
     }
     
-    private float HeldKarp(int current, int mask)
+    private Tuple<float, List<int>> HeldKarp(int current, HashSet<int> visited, List<int> path)
     {
-        if (mask == (1 << n) - 1)
-            return graph[current, 0];
+        visited.Add(current);
 
-        if (memo[current, mask] != 0)
-            return memo[current, mask];
-        
+        if (visited.Count == n)
+        {
+            // All cities visited, add the starting city to complete the tour
+            path.Add(0);
+            return new Tuple<float, List<int>>(graph[current, 0], path);
+        }
+
+        if (memo[current, GetMask(visited)] != 0)
+        {
+            return new Tuple<float, List<int>>(memo[current, GetMask(visited)], path);
+        }
+
         float minCost = float.MaxValue;
+        List<int> minPath = null;
 
         for (int next = 0; next < n; next++)
         {
-            if ((mask & (1 << next)) == 0)
+            if (!visited.Contains(next))
             {
-                int newMask = mask | (1 << next);
-                float cost = graph[current, next] + HeldKarp(next, newMask);
+                List<int> newPath = new List<int>(path);
+                newPath.Add(next);
 
-                minCost = Mathf.Min(minCost, cost);
+                visited.Add(next);
+                var result = HeldKarp(next, visited, newPath);
+                visited.Remove(next);
+
+                float cost = graph[current, next] + result.Item1;
+
+                if (cost < minCost)
+                {
+                    minCost = cost;
+                    minPath = result.Item2;
+                }
             }
         }
-        
-        memo[current, mask] = minCost;
-        return minCost;
+
+        visited.Remove(current);
+        memo[current, GetMask(visited)] = minCost;
+        return new Tuple<float, List<int>>(minCost, minPath);
+    }
+
+    private int GetMask(HashSet<int> visited)
+    {
+        int mask = 0;
+        foreach (var city in visited)
+        {
+            mask |= 1 << city;
+        }
+        return mask;
     }
 
 }
