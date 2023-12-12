@@ -39,7 +39,6 @@ public class BruteForce : BaseAlgorithm
         }
         
         pointsToFindPath = shortestPath;
-        
         EndOfAlgorithm();
     }
 
