@@ -7,15 +7,14 @@ public class Held_Karp : BaseAlgorithm
 {
     private float[,] graph;
     float[,] memo; 
+    private int[,] parent;
     int n;
-    private int[] resultTour;
     
     protected override void Algorithm()
     {
         StartOfAlgorithm();
         
         n = algorithmPort.unordered.Count;
-        resultTour = new int[n];
         
         graph = new float[n, n];
         for (int i = 0; i < n; i++)
@@ -25,15 +24,30 @@ public class Held_Karp : BaseAlgorithm
                 graph[i, j] = Vector2.Distance(algorithmPort.unordered[i].position, algorithmPort.unordered[j].position);
             }
         }
-
         
         memo = new float[n, 1 << n];
+        parent = new int[n, 1 << n];
 
         float result = HeldKarp(0, 1);
 
-        for (int i = 0; i < resultTour.Length; i++)
+        // Retrieve the path
+        List<int> path = new List<int>();
+        int mask = 1;
+        int current = 0;
+
+        for (int i = 0; i < n - 1; i++)
         {
-            pointsToFindPath[i] = algorithmPort.unordered[resultTour[i]];
+            int next = parent[current, mask];
+            path.Add(next);
+            current = next;
+            mask |= (1 << next);
+        }
+
+        path.Add(0); // Add the starting node to complete the cycle
+
+        for (int i = 0; i < path.Count; i++)
+        {
+            pointsToFindPath[i] = algorithmPort.unordered[path[i]];
         }
 
         EndOfAlgorithm();
@@ -48,6 +62,7 @@ public class Held_Karp : BaseAlgorithm
             return memo[current, mask];
         
         float minCost = float.MaxValue;
+        int minNext = -1;
 
         for (int next = 0; next < n; next++)
         {
@@ -56,12 +71,17 @@ public class Held_Karp : BaseAlgorithm
                 int newMask = mask | (1 << next);
                 float cost = graph[current, next] + HeldKarp(next, newMask);
 
-                minCost = Mathf.Min(minCost, cost);
+                if (cost < minCost)
+                {
+                    minCost = cost;
+                    minNext = next;
+                }
             }
         }
-        
+
         memo[current, mask] = minCost;
+        parent[current, mask] = minNext;
+
         return minCost;
     }
-
 }
