@@ -4,3 +4,4 @@ https://www.baeldung.com/cs/tsp-exact-solutions-vs-heuristic-vs-approximation-al
 https://codereview.stackexchange.com/questions/226804/linq-for-generating-all-possible-permutations
 https://www.quickperm.org
 https://www.baeldung.com/cs/array-generate-all-permutations
+https://www.geeksforgeeks.org/traveling-salesman-problem-using-branch-and-bound-2/
