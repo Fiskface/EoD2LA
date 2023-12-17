@@ -29,6 +29,8 @@ public class Held_Karp : BaseAlgorithm
         parent = new int[n, 1 << n];
 
         float result = HeldKarp(0, 1);
+        
+        Debug.Log("HK: " + result);
 
         // Retrieve the path
         List<int> path = new List<int>();
