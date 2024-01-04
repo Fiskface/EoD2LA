@@ -29,10 +29,7 @@ public class Held_Karp : BaseAlgorithm
         parent = new int[n, 1 << n];
 
         float result = HeldKarp(0, 1);
-        
-        Debug.Log("HK: " + result);
 
-        // Retrieve the path
         List<int> path = new List<int>();
         int mask = 1;
         int current = 0;
@@ -45,7 +42,7 @@ public class Held_Karp : BaseAlgorithm
             mask |= (1 << next);
         }
 
-        path.Add(0); // Add the starting node to complete the cycle
+        path.Add(0);
 
         for (int i = 0; i < path.Count; i++)
         {

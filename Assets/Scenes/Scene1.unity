@@ -347,8 +347,8 @@ MonoBehaviour:
   minPoints: 4
   maxPoints: 100
   increasePerInterval: 1
-  samplesPerInterval: 100
-  maxAverageTimePerInterval: 0.5
+  samplesPerInterval: 500
+  maxAverageTimePerInterval: 1
   currentPoints: 0
 --- !u!120 &1560022256
 LineRenderer:

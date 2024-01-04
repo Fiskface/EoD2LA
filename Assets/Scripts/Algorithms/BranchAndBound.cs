@@ -30,7 +30,6 @@ public class BranchAndBound : BaseAlgorithm
 
         TSP(graph);
         
-        Debug.Log("BnB: " + finalRes);
         for (int i = 0; i < finalPath.Length; i++)
         {
             pointsToFindPath[i] = algorithmPort.unordered[finalPath[i]];
